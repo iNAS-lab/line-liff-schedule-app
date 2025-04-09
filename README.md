@@ -43,3 +43,16 @@ cd /workspaces/line-liff-schedule-app
 git add .
 git commit -m "Fix: move project root correctly"
 git push origin main
+
+ステップ①：リモートの変更を取り込む
+bash
+コピーする
+編集する
+git pull origin main --rebase
+--rebase をつけることで、ローカルのコミットを「後ろに付け直す」安全な形になります。
+
+ステップ②：衝突がなければ、そのまま push！
+bash
+コピーする
+編集する
+git push origin main
