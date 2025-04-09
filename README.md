@@ -35,4 +35,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-##リポジトリのルート（line-liff-schedule-app） 
+git にコミット → GitHub に Push
+bash
+コピーする
+編集する
+cd /workspaces/line-liff-schedule-app
+git add .
+git commit -m "Fix: move project root correctly"
+git push origin main
