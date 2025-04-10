@@ -44,6 +44,12 @@ git add .
 git commit -m "Fix: move project root correctly"
 git push origin main
 
+
+# 変更を Git に反映
+git add .
+git commit -m "fix: final cleanup and sync with GitHub"
+git push origin main
+
 ステップ①：リモートの変更を取り込む
 bash
 コピーする
