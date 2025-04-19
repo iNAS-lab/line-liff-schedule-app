@@ -1,6 +1,6 @@
 // pages/api/users.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '../../src/lib/supabaseClient' // @ がエラーならこちら
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { data, error } = await supabase.from('users').select('*')
