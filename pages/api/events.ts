@@ -8,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .select('*')
     .order('date', { ascending: true }) // ← 日付順に並び替え
 
+    console.log('📦 Supabase Events:', data) // ← これを追加！
+    
   if (error) {
     res.status(500).json({ error: error.message })
   } else {
