@@ -1,5 +1,6 @@
 // pages/schedule.tsx
 import { useEffect, useState } from 'react'
+import { fetchEvents } from '@/lib/api'
 
 type Event = {
   id: string
@@ -10,15 +11,23 @@ type Event = {
 
 export default function SchedulePage() {
   const [events, setEvents] = useState<Event[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const res = await fetch('/api/events')
-      const data = await res.json()
-      setEvents(data)
+    const load = async () => {
+      try {
+        const data = await fetchEvents()
+        setEvents(data)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setLoading(false)
+      }
     }
-    fetchEvents()
+    load()
   }, [])
+
+  if (loading) return <p>読み込み中...</p>
 
   return (
     <div className="p-4">
@@ -28,7 +37,7 @@ export default function SchedulePage() {
           <li key={event.id} className="border p-4 rounded">
             <h2 className="text-lg font-semibold">{event.title}</h2>
             <p>{event.description}</p>
-            <p className="text-sm text-gray-500">📅 {event.date}</p>
+            <p className="text-sm text-gray-500">📆 {new Date(event.date).toLocaleDateString()}</p>
           </li>
         ))}
       </ul>
