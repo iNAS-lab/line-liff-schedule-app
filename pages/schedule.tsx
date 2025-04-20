@@ -5,7 +5,7 @@ type Event = {
   id: string
   title: string
   description: string
-  scheduled_date: string
+  date: string
 }
 
 export default function SchedulePage() {
@@ -28,7 +28,7 @@ export default function SchedulePage() {
           <li key={event.id} className="border p-4 rounded">
             <h2 className="text-lg font-semibold">{event.title}</h2>
             <p>{event.description}</p>
-            <p className="text-sm text-gray-500">📅 {event.scheduled_date}</p>
+            <p className="text-sm text-gray-500">📅 {event.date}</p>
           </li>
         ))}
       </ul>
