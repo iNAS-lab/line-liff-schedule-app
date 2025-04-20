@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { data, error } = await supabase
     .from('events')
     .select('*')
-    .order('scheduled_date', { ascending: true }) // ← 日付順に並び替え
+    .order('date', { ascending: true }) // ← 日付順に並び替え
 
   if (error) {
     res.status(500).json({ error: error.message })
