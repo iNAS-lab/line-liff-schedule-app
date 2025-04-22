@@ -3,11 +3,12 @@ import { GetServerSideProps } from 'next'
 import { useLiffProfile } from '@/hooks/useLiffProfile'
 import { AttendanceButtons } from '@/components/AttendanceButtons'
 
-const userId = useLiffProfile()
-console.log('👤 userId:', userId)
+
 
 export default function EventDetailPage({ eventId }: { eventId: string }) {
   const userId = useLiffProfile()
+
+  console.log('👤 userId:', userId)
 
   return (
     <div className="p-4">
