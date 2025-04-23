@@ -1,38 +1,20 @@
 // pages/index.tsx
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import liff from '@line/liff'
 
-type Event = {
-  id: number
-  title: string
-  date: string
-}
-
-export default function Home() {
-  const [events, setEvents] = useState<Event[]>([])
-
+export default function HomePage() {
   useEffect(() => {
-    const fetchEvents = async () => {
-      const res = await fetch('/api/events')
-      const data = await res.json()
-      setEvents(data)
-    }
-    fetchEvents()
+    liff.init({ liffId: process.env.NEXT_PUBLIC_LIFF_ID! }).then(() => {
+      if (!liff.isLoggedIn()) {
+        liff.login()
+      } else {
+        console.log('✅ LIFF ログイン済み')
+        liff.getProfile().then(profile => {
+          console.log('👤 ユーザー情報:', profile)
+        })
+      }
+    })
   }, [])
 
-  return (
-    <div style={{ padding: '1rem' }}>
-      <h1>イベント一覧</h1>
-      {events.length === 0 ? (
-        <p>イベントがまだありません。</p>
-      ) : (
-        <ul>
-          {events.map((event) => (
-            <li key={event.id}>
-              📅 {event.date} | 📝 {event.title}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
+  return <div className="p-4">LINEミニアプリへようこそ！</div>
 }
