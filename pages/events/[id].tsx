@@ -7,10 +7,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     query: { id },
   } = req
 
+  // ID が無効な場合のエラーハンドリング
   if (!id || typeof id !== 'string') {
     return res.status(400).json({ message: 'Invalid ID' })
   }
 
+  // Supabase から特定のイベントを取得
   const { data, error } = await supabase
     .from('events')
     .select('*')
