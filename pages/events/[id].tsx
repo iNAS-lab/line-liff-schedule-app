@@ -1,28 +1,38 @@
-// pages/api/events/[id].ts
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { supabase } from '@/lib/supabaseClient'
+// pages/events/[id].tsx
+import { GetServerSideProps } from 'next'
+import { useLiffProfile } from '@/hooks/useLiffProfile'
+import { AttendanceButtons } from '@/components/AttendanceButtons'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const {
-    query: { id },
-  } = req
+type Event = {
+  id: string
+  title: string
+  description: string
+  date: string
+}
 
-  // ID が無効な場合のエラーハンドリング
-  if (!id || typeof id !== 'string') {
-    return res.status(400).json({ message: 'Invalid ID' })
+export default function EventDetailPage({ event }: { event: Event }) {
+  const userId = useLiffProfile()
+
+  return (
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-4">イベント詳細</h1>
+      <p>📅 {event.date}</p>
+      <p>📝 {event.title}</p>
+      <p>{event.description}</p>
+      {userId && <AttendanceButtons eventId={event.id} userId={userId} />}
+    </div>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const eventId = context.params?.id as string
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/${eventId}`)
+  const event = await res.json()
+
+  return {
+    props: {
+      event,
+    },
   }
-
-  // Supabase から特定のイベントを取得
-  const { data, error } = await supabase
-    .from('events')
-    .select('*')
-    .eq('id', id)
-    .single()
-
-  if (error) {
-    console.error('❌ Supabase Error (GET /events/[id]):', error)
-    return res.status(500).json({ message: 'Supabase fetch error' })
-  }
-
-  return res.status(200).json(data)
 }
