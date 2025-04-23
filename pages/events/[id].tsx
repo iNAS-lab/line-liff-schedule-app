@@ -1,14 +1,19 @@
 // pages/events/[id].tsx
+import { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
-import { useLiffProfile } from '@/hooks/useLiffProfile'
 import { AttendanceButtons } from '@/components/AttendanceButtons'
-
-
+import { useLiffProfile } from '@/hooks/useLiffProfile'
 
 export default function EventDetailPage({ eventId }: { eventId: string }) {
-  const userId = useLiffProfile()
+  const [userId, setUserId] = useState<string | null>(null)
 
-  console.log('👤 userId:', userId)
+  useEffect(() => {
+    const getProfile = async () => {
+      const id = await useLiffProfile()
+      setUserId(id)
+    }
+    getProfile()
+  }, [])
 
   return (
     <div className="p-4">
