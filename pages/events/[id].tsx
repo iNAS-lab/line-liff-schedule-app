@@ -1,41 +1,24 @@
-// pages/events/[id].tsx
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { useLiffProfile } from '@/hooks/useLiffProfile'
-import { AttendanceButtons } from '@/components/AttendanceButtons'
+// pages/api/events/[id].ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { supabase } from '@/lib/supabaseClient'
 
-type Event = {
-  id: string
-  title: string
-  description: string
-  date: string
-}
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { id } = req.query
 
-export default function EventDetailPage() {
-  const router = useRouter()
-  const { id } = router.query
-  const userId = useLiffProfile()
-  const [event, setEvent] = useState<Event | null>(null)
+  if (typeof id !== 'string') {
+    return res.status(400).json({ error: 'Invalid ID format' })
+  }
 
-  useEffect(() => {
-    if (!id) return
-    const fetchEvent = async () => {
-      const res = await fetch(`/api/events/${id}`)
-      const data = await res.json()
-      setEvent(data)
-    }
-    fetchEvent()
-  }, [id])
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .single()
 
-  if (!event) return <div>読み込み中...</div>
+  if (error) {
+    console.error('❌ Supabase Error:', error)
+    return res.status(500).json({ error: error.message })
+  }
 
-  return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">イベント詳細</h1>
-      <p>📅 {event.date}</p>
-      <p>📝 {event.title}</p>
-      <p>{event.description}</p>
-      {userId && <AttendanceButtons eventId={event.id} userId={userId} />}
-    </div>
-  )
+  res.status(200).json(data)
 }
