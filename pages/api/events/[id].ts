@@ -5,10 +5,11 @@ import { supabase } from '@/lib/supabaseClient'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query
 
-  if (!id || typeof id !== 'string') {
-    return res.status(400).json({ message: 'Invalid event ID' })
+  if (typeof id !== 'string') {
+    return res.status(400).json({ message: 'Invalid id' })
   }
 
+  // Supabaseから特定のイベントを取得
   const { data, error } = await supabase
     .from('events')
     .select('*')
@@ -17,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (error) {
     console.error('❌ Supabase Error:', error)
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 
   if (!data) {

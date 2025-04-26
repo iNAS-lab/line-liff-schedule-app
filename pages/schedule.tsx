@@ -1,6 +1,5 @@
-// pages/schedule.tsx
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 type Event = {
   id: string
@@ -10,27 +9,32 @@ type Event = {
 }
 
 export default function SchedulePage() {
+  const router = useRouter()
   const [events, setEvents] = useState<Event[]>([])
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const res = await fetch('/api/events')
-      const data = await res.json()
-      setEvents(data)
+      try {
+        const res = await fetch('/api/events')
+        const data = await res.json()
+        setEvents(data)
+      } catch (error) {
+        console.error('❌ イベント取得エラー:', error)
+      }
     }
+
     fetchEvents()
   }, [])
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">📅 イベント一覧</h1>
+      <h1 className="text-2xl font-bold mb-6">スケジュール一覧</h1>
       <ul className="space-y-4">
         {events.map((event) => (
-          <li key={event.id} className="border p-4 rounded">
-            <Link href={`/events/${event.id}`} className="block hover:underline">
-              <h2 className="text-lg font-semibold">🗓 {event.date}</h2>
-              <p className="text-base">📝 {event.title}</p>
-            </Link>
+          <li key={event.id} className="border p-4 rounded shadow" onClick={() => router.push(`/events/${event.id}`)}>
+            <p>📅 {event.date}</p>
+            <p>📝 {event.title}</p>
+            <p>{event.description}</p>
           </li>
         ))}
       </ul>

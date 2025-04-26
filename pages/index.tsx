@@ -1,20 +1,25 @@
-// pages/index.tsx
-import { useEffect } from 'react'
-import liff from '@line/liff'
+import { useRouter } from 'next/router'
 
-export default function HomePage() {
-  useEffect(() => {
-    liff.init({ liffId: process.env.NEXT_PUBLIC_LIFF_ID! }).then(() => {
-      if (!liff.isLoggedIn()) {
-        liff.login()
-      } else {
-        console.log('✅ LIFF ログイン済み')
-        liff.getProfile().then(profile => {
-          console.log('👤 ユーザー情報:', profile)
-        })
-      }
-    })
-  }, [])
+export default function Home() {
+  const router = useRouter()
 
-  return <div className="p-4">LINEミニアプリへようこそ！</div>
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-6">ホーム画面</h1>
+      <div className="flex flex-col space-y-4">
+        <button 
+          className="p-3 bg-blue-500 text-white rounded"
+          onClick={() => router.push('/admin')}
+        >
+          管理者メニュー
+        </button>
+        <button 
+          className="p-3 bg-green-500 text-white rounded"
+          onClick={() => router.push('/schedule')}
+        >
+          イベント一覧
+        </button>
+      </div>
+    </div>
+  )
 }

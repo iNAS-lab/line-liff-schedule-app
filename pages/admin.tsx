@@ -1,37 +1,23 @@
-// pages/admin.tsx
-import { useState } from 'react'
+import { useRouter } from 'next/router'
 
-export default function AdminPage() {
-  const [isSending, setIsSending] = useState(false)
-
-  const handleNotify = async () => {
-    setIsSending(true)
-
-    const res = await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        to: 'Uxxxxxxxxxxxx', // LINEのユーザーID（仮）
-        message: '📅 出欠確認のお願いです！',
-      }),
-    })
-
-    const result = await res.json()
-    console.log('✅ 通知結果:', result)
-
-    setIsSending(false)
-  }
+export default function Admin() {
+  const router = useRouter()
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">管理者メニュー</h1>
+      <h1 className="text-2xl font-bold mb-6">管理者画面</h1>
+      
+      <h2 className="text-xl font-semibold mb-2">出欠一覧</h2>
+      {/* 出欠一覧テーブル（ここに追加予定） */}
 
-      <button
-        onClick={handleNotify}
-        disabled={isSending}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+      <h2 className="text-xl font-semibold mt-6 mb-2">イベント作成</h2>
+      {/* イベント作成フォーム（ここに追加予定） */}
+
+      <button 
+        className="mt-6 p-2 bg-gray-400 text-white rounded"
+        onClick={() => router.push('/')}
       >
-        {isSending ? '送信中...' : '保留ユーザーに通知'}
+        戻る
       </button>
     </div>
   )
