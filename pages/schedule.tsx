@@ -19,7 +19,7 @@ export default function SchedulePage() {
         const data = await res.json()
         setEvents(data)
       } catch (error) {
-        console.error('❌ イベント取得エラー:', error)
+        console.error('schedule.tsx❌ イベント取得エラー:', error)
       }
     }
 

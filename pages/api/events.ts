@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .order('date', { ascending: true })
 
   if (error) {
-    console.error('❌ Supabase Error:', error)
+    console.error('❌ events.ts Supabase Error:', error)
     res.status(500).json({ error: error.message })
   } else {
     console.log('📦 Supabase Events:', data)
