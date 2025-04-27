@@ -38,6 +38,12 @@ export default function SchedulePage() {
           </li>
         ))}
       </ul>
+      <button 
+        className="mt-6 p-2 bg-gray-400 text-white rounded"
+        onClick={() => router.push('/')}
+      >
+        戻る
+      </button>
     </div>
   )
 }
